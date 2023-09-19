@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    container_name: tips-api-container
+    image: tips-api:${VERSION}
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "${HTTP_PORT}:80"
+      - "${HTTPS_PORT}:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+    depends_on:
+      - db
+
+  db:
+    container_name: tips-db-container
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: sample-tips-api-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
