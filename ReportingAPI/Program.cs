@@ -49,7 +49,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/tips", async (AppDbContext dbContext) =>
 {
-    var tips = await dbContext.Tips.ToListAsync();
+    var tips = await dbContext.TipEvents.ToListAsync();
     return Results.Ok(tips);
 })
 .WithName("tips")

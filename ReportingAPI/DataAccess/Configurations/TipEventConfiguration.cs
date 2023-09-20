@@ -4,11 +4,11 @@ using ReportingAPI.DataAccess.Entities;
 
 namespace ReportingAPI.DataAccess.Configurations
 {
-    internal class TipConfiguration : IEntityTypeConfiguration<Tip>
+    internal class TipEventConfiguration : IEntityTypeConfiguration<TipEvent>
     {
-        public void Configure(EntityTypeBuilder<Tip> builder)
+        public void Configure(EntityTypeBuilder<TipEvent> builder)
         {
-            builder.ToTable("Tips")
+            builder.ToTable("TipEvents")
                 .HasKey(x => x.Id);
         }
     }

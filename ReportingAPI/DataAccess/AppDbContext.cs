@@ -13,7 +13,7 @@ namespace ReportingAPI.DataAccess
         {
         }
 
-        public DbSet<Tip> Tips { get; set; }
+        public DbSet<TipEvent> TipEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
