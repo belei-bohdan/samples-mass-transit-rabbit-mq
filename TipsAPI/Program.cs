@@ -1,3 +1,4 @@
+using Contracts;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -56,9 +57,17 @@ app.MapGet("/tips", async (AppDbContext dbContext) =>
 .WithName("get-all")
 .WithOpenApi();
 
-app.MapGet("/tips/{id}", async (AppDbContext dbContext, int id) =>
+app.MapGet("/tips/{id}", async (AppDbContext dbContext, int id, IPublishEndpoint publishEndpoint) =>
 {
     var tip = await dbContext.Tips.FindAsync(id);
+    if (tip is null) return Results.NoContent();
+
+    await publishEndpoint.Publish(new TipViewedEvent()
+    {
+        Id = tip.Id,
+        ViewedOn = DateTime.UtcNow
+    });
+
     return Results.Ok(tip);
 })
 .WithName("get-by-id")

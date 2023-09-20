@@ -1,6 +1,7 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ReportingAPI.Consumers;
 using ReportingAPI.DataAccess;
 
 const string API_NAME = "Reporting API";
@@ -14,6 +15,9 @@ builder.Services.AddDbContext<AppDbContext>(options => options
 builder.Services.AddMassTransit(busConfigurator =>
 {
     busConfigurator.SetKebabCaseEndpointNameFormatter();
+
+    busConfigurator.AddConsumer<TipViwedConsumer>();
+
     busConfigurator.UsingRabbitMq((context, configurator) =>
     {
         configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), h =>
