@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using TipsAPI.DataAccess;
-using TipsAPI.DataAccess.Entities;
+using ReportingAPI.DataAccess;
 
-const string API_NAME = "Tips API";
+const string API_NAME = "Reporting API";
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options => options
-    .UseNpgsql(builder.Configuration.GetConnectionString("TipsDb"))
+    .UseNpgsql(builder.Configuration.GetConnectionString("ReportingDb"))
     .UseSnakeCaseNamingConvention());
 
 builder.Services.AddEndpointsApiExplorer();
@@ -37,35 +36,7 @@ app.MapGet("/tips", async (AppDbContext dbContext) =>
     var tips = await dbContext.Tips.ToListAsync();
     return Results.Ok(tips);
 })
-.WithName("get-all")
-.WithOpenApi();
-
-app.MapGet("/tips/{id}", async (AppDbContext dbContext, int id) =>
-{
-    var tip = await dbContext.Tips.FindAsync(id);
-    return Results.Ok(tip);
-})
-.WithName("get-by-id")
-.WithOpenApi();
-
-app.MapPost("/tips", async (AppDbContext dbContext, Tip tip) =>
-{
-    await dbContext.Tips.AddAsync(tip);
-    await dbContext.SaveChangesAsync();
-    
-    return Results.Created("/tips", tip);
-})
-.WithName("create")
-.WithOpenApi();
-
-app.MapDelete("/tips/{id}", async (AppDbContext dbContext, int id) =>
-{
-    await dbContext.Tips.Where(t => t.Id == id).ExecuteDeleteAsync();
-    await dbContext.SaveChangesAsync();
-
-    return Results.NoContent();
-})
-.WithName("delete")
+.WithName("tips")
 .WithOpenApi();
 
 app.Run();
