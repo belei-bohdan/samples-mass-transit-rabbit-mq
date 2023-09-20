@@ -47,3 +47,14 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "6432:5432"
+ 
+  tips-mq:
+      image: rabbitmq:management
+      container_name: rabbit-mq
+      hostname: tipsmq
+      volumes:
+        - ./.containers/queue/data/:/var/lib/rabbitmq/mnesia
+        - ./.containers/queue/log/:/var/lib/rabbitmq/mnesia
+      environment:
+        RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}

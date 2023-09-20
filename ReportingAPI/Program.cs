@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ReportingAPI.DataAccess;
@@ -9,6 +10,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options => options
     .UseNpgsql(builder.Configuration.GetConnectionString("ReportingDb"))
     .UseSnakeCaseNamingConvention());
+
+builder.Services.AddMassTransit(busConfigurator =>
+{
+    busConfigurator.SetKebabCaseEndpointNameFormatter();
+    busConfigurator.UsingRabbitMq((context, configurator) =>
+    {
+        configurator.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), h =>
+        {
+            h.Username(builder.Configuration["MessageBroker:UserName"]);
+            h.Password(builder.Configuration["MessageBroker:Password"]);
+        });
+
+        configurator.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
