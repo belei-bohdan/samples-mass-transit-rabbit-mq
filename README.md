@@ -1,7 +1,8 @@
-# MassTransitRabitMQ
+# Mass-Transit RabbitMQ
 Sample of using MassTransit in conjunction with RabbitMQ in an ASP.NET Core.
 
-**Please Note:** This application is intentionally designed as a simplified example for learning purposes. 
+## Disclaimer
+This application is intentionally designed as a simplified example for learning purposes. 
 It does not adhere to best practices that you would typically use in a production application. 
 Instead, it focuses on clarity and ease of understanding to help developers grasp the fundamentals of MassTransit and RabbitMQ.
 
